@@ -1,2 +1,3 @@
 # leetcode-daily
-My Daily Submission of Leetcode problems
+I am Kunal Parkhade
+My all submissions of leetcode will be here
