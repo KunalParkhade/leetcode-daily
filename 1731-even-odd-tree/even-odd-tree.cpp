@@ -1,39 +1,51 @@
 class Solution {
 public:
     bool isEvenOddTree(TreeNode* root) {
-        TreeNode* current = root;
-        return dfs(current, 0);
-    }
-
-private:
-    vector<int> prev;
-    bool dfs(TreeNode* current, size_t level) {
-        // Base case, an empty tree is Even-Odd
-        if (current == nullptr) {
+        if (!root)
             return true;
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        int level = 0;
+        vector<int> prevLevelValues;
+        
+        while (!q.empty()) {
+            int size = q.size();
+            vector<int> currLevelValues;
+            
+            for (int i = 0; i < size; ++i) {
+                TreeNode* node = q.front();
+                q.pop();
+                
+                // Check if the node's value violates the Even-Odd property
+                if ((level % 2 == 0 && (node->val % 2 == 0 || (i > 0 && node->val <= currLevelValues.back()))) ||
+                    (level % 2 == 1 && (node->val % 2 == 1 || (i > 0 && node->val >= currLevelValues.back()))))
+                    return false;
+                
+                currLevelValues.push_back(node->val);
+                
+                if (node->left)
+                    q.push(node->left);
+                if (node->right)
+                    q.push(node->right);
+            }
+            
+            // Check if the current level values are strictly increasing or decreasing
+            if (level % 2 == 0) {
+                for (int i = 1; i < currLevelValues.size(); ++i) {
+                    if (currLevelValues[i] <= currLevelValues[i - 1])
+                        return false;
+                }
+            } else {
+                for (int i = 1; i < currLevelValues.size(); ++i) {
+                    if (currLevelValues[i] >= currLevelValues[i - 1])
+                        return false;
+                }
+            }
+            
+            ++level;
         }
-
-        // Compare the parity of current and level
-        if (current->val % 2 == level % 2) {
-            return false;
-        }
-
-        // Resize prev to make room for the new level
-        prev.resize(max(prev.size(), level + 1));
-
-        // If there are previous nodes on this level, check increasing/decreasing
-        // If on an even level, check that currrent's value is greater than the previous on this level
-        // If on an odd level, check that current's value is less than the previous on this level
-        if (prev[level] != 0 && 
-                ((level % 2 == 0 && current->val <= prev[level]) ||
-                 (level % 2 == 1 && current->val >= prev[level]))) {
-            return false;  // Not in the required order
-        }
-
-        // Add current value to prev at index level
-        prev[level] = current->val;
-
-        // Recursively call DFS on the left and right children
-        return dfs(current->left, level + 1) && dfs(current->right, level + 1);
+        
+        return true;
     }
 };
