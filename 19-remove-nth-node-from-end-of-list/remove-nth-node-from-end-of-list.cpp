@@ -16,19 +16,30 @@ public:
         ListNode* first = dummy;
         ListNode* second = dummy;
 
+        // Move first pointer to the (n+1)th node from the beginning
         for (int i = 0; i <= n; ++i) {
+            if (first == nullptr) // To handle cases where n exceeds the length of the list
+                return nullptr;
             first = first->next;
         }
 
+        // Move both pointers until first reaches the end
         while (first != nullptr) {
             first = first->next;
             second = second->next;
         }
 
+        // Update the next pointer of the node before the one to be removed
         ListNode* temp = second->next;
         second->next = second->next->next;
+
+        // Delete the node to be removed
         delete temp;
 
-        return dummy->next;
+        // Store the result and clean up memory
+        ListNode* result = dummy->next;
+        delete dummy;
+
+        return result;
     }
 };
