@@ -11,32 +11,34 @@
 class Solution {
 public:
     void reorderList(ListNode* head) {
-        stack<ListNode*> s;
-        ListNode* curr = head;
-        while(curr){
-            s.push(curr);
-            curr = curr->next;
+        if (!head || !head->next || !head->next->next) return;
+
+        // Find the middle of the linked list
+        ListNode *slow = head, *fast = head;
+        while (fast->next && fast->next->next) {
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        curr = head;
-        unordered_map<ListNode*, bool> vis;
-        while(true){
-            ListNode* last = s.top();
-            s.pop();
-            ListNode* next = curr->next;
-            vis[curr] = true;
-            if(vis[last]){ 
-                curr->next = NULL; 
-                break; 
-            } 
-            curr->next = last; 
-            vis[last] = true;
-            curr = curr->next; 
-            if(vis[next]){
-                curr->next = NULL;
-                break;
-            }
-            curr->next = next;
-            curr = curr->next;
+
+        // Reverse the second half of the linked list
+        ListNode *prev = nullptr, *curr = slow->next;
+        slow->next = nullptr;
+        while (curr) {
+            ListNode *next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        // Merge the two halves
+        ListNode *first = head, *second = prev;
+        while (second) {
+            ListNode *next1 = first->next;
+            ListNode *next2 = second->next;
+            first->next = second;
+            second->next = next1;
+            first = next1;
+            second = next2;
         }
     }
 };
