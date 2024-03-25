@@ -3,14 +3,15 @@ public:
     vector<int> findDuplicates(vector<int>& nums) {
         ios_base::sync_with_stdio(false);
         cin.tie(NULL);
-        unordered_map<int,int> mp;
+        
         vector<int> dup;
-        for(const int i:nums){
-            mp[i]++;
-        }
-        for(auto a:mp){
-            if(a.second>1){
-                dup.push_back(a.first);
+        
+        for(int i = 0; i < nums.size(); ++i) {
+            int index = abs(nums[i]) - 1; // Map to index (0-based)
+            if(nums[index] < 0) { // If already marked negative, it's a duplicate
+                dup.push_back(index + 1); // Push the duplicate
+            } else {
+                nums[index] = -nums[index]; // Mark as visited by negating
             }
         }
 
