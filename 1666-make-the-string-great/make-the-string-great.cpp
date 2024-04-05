@@ -1,24 +1,25 @@
 class Solution {
 public:
     string makeGood(string s) {
-        if(s.empty()){
+        if (s.empty()) {
             return "";
         }
         stack<char> st;
-        for(char ch:s){
-            if(!st.empty()&& abs(st.top()-ch)==32){
+        for (char ch : s) {
+            if (!st.empty() && abs(st.top() - ch) == 32) {
                 st.pop();
-            }
-            else{
+            } else {
                 st.push(ch);
             }
         }
 
-        string result;
-        while(!st.empty()){
-            result=st.top()+result;
+        stringstream ss;
+        while (!st.empty()) {
+            ss << st.top();
             st.pop();
         }
+        string result=ss.str();
+        reverse(result.begin(),result.end());
 
         return result;
     }
