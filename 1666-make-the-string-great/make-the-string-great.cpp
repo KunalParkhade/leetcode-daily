@@ -1,8 +1,10 @@
 class Solution {
 public:
     string makeGood(string s) {
+        if(s.empty()){
+            return "";
+        }
         stack<char> st;
-        
         for(char ch:s){
             if(!st.empty()&& abs(st.top()-ch)==32){
                 st.pop();
