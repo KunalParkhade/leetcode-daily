@@ -1,23 +1,19 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        stack<int> s;
-        int n=height.size();
-        int ans=0;
-
-        int i=0;
-        while(i<n){
-            while(!s.empty() && height[i]>height[s.top()]){
-                int top=s.top();
-                s.pop();
-                if(s.empty())
-                    break;
-                int distance=i-s.top()-1;
-                int bounded_h=min(height[i],height[s.top()])-height[top];
-                ans+=distance*bounded_h;
+        int i = 0, left_max = height[0], sum = 0;
+        int j = height.size() - 1, right_max = height[j];
+        while (i < j) {
+            if (left_max <= right_max) {
+                sum += (left_max - height[i]);
+                i++;
+                left_max = max(left_max, height[i]);
+            } else {
+                sum += (right_max - height[j]);
+                j--;
+                right_max = max(right_max, height[j]);
             }
-            s.push(i++);
         }
-        return ans;
+        return sum;
     }
 };
