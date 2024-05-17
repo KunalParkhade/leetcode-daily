@@ -12,14 +12,37 @@
 class Solution {
 public:
     TreeNode* removeLeafNodes(TreeNode* root, int target) {
-        if(root==NULL)
-            return NULL;
+        stack<TreeNode*> s;
+        TreeNode* currentNode = root;
+        TreeNode* lastRightNode=nullptr;
         
-        root->left=removeLeafNodes(root->left, target);
-        root->right=removeLeafNodes(root->right,target);
+        while(!s.empty() || currentNode!=nullptr){
+            while(currentNode!=nullptr){
+                s.push(currentNode);
+                currentNode = currentNode->left;
+            }
+            currentNode = s.top();
 
-        if(root->left==nullptr && root->right==nullptr && root->val==target){
-            return nullptr;
+            if(currentNode->right!=lastRightNode && currentNode->right){
+            currentNode=currentNode->right;
+            continue;
+        }
+
+        s.pop();
+        if(currentNode->left==nullptr && currentNode->right==nullptr && currentNode->val==target){
+            if(s.empty()){
+                return nullptr;
+            }
+            TreeNode* parent=s.top();
+            if(parent->left==currentNode){
+                parent->left=nullptr;
+            }
+            else{
+                parent->right=nullptr;
+            }
+        }
+        lastRightNode=currentNode;
+        currentNode=nullptr;
         }
         return root;
     }
