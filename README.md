@@ -1,5 +1,5 @@
-# leetcode-daily
-# Daily Problems Solved Repository
+# Daily Problems Solved Repository   ![image](https://github.com/KunalParkhade/leetcode-daily/assets/113717557/a1345319-c64d-4206-814a-650aa12a6cf5)
+
 
 Welcome to the Daily Problems Solved repository! Here you'll find a collection of daily problems that I've encountered and solved, along with explanations and code implementations.
 
