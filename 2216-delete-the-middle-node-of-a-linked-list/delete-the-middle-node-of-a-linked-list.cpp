@@ -11,43 +11,67 @@
 class Solution {
 public:
 
-    int getLength(ListNode* head)
-    {
-        int len = 0;
-        while (head != nullptr)
-        {
-            len++;
-            head = head->next;
-        }
-        return len;
-    }
+    // int getLength(ListNode* head)
+    // {
+    //     int len = 0;
+    //     while (head != nullptr)
+    //     {
+    //         len++;
+    //         head = head->next;
+    //     }
+    //     return len;
+    // }
 
     ListNode* deleteMiddle(ListNode* head) {
-        if (head == nullptr) {
-            return nullptr; 
+        // if (head == nullptr) {
+        //     return nullptr; 
+        // }
+
+        // int len = getLength(head);
+
+        // if (len == 1) {
+        //     return nullptr; 
+        // }
+
+        // int midIndex = len / 2;
+
+        // ListNode* current = head;
+
+        // // Traverse to the node just before the middle node
+        // for (int i = 1; i < midIndex; i++) {
+        //     current = current->next;
+        // }
+
+        // // Delete the middle node
+        // ListNode* x = current->next;
+        // current->next = x->next;
+
+        // // Free the memory of the deleted node if using a language with manual memory management
+        // delete x;
+
+        // return head;
+
+        if(head==nullptr || head->next == nullptr)  return nullptr;
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* prev = nullptr;
+
+        while(fast!=nullptr && fast->next!=nullptr){
+            prev = slow;
+            fast = fast->next->next;
+            slow = slow->next;
         }
 
-        int len = getLength(head);
-
-        if (len == 1) {
-            return nullptr; 
+        if(prev!=nullptr){
+            prev->next = slow->next;
+            delete slow;
         }
 
-        int midIndex = len / 2;
+        // ListNode* x = slow;
+        // slow->next = x->next;
 
-        ListNode* current = head;
-
-        // Traverse to the node just before the middle node
-        for (int i = 1; i < midIndex; i++) {
-            current = current->next;
-        }
-
-        // Delete the middle node
-        ListNode* x = current->next;
-        current->next = x->next;
-
-        // Free the memory of the deleted node if using a language with manual memory management
-        delete x;
+        // delete x;
 
         return head;
     }
