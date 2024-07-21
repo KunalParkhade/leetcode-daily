@@ -2,22 +2,17 @@ class Solution {
 public:
     void findCombinationHelper(int ind, vector<int>& arr, int target,
                                vector<int>& ds, vector<vector<int>>& ans) {
-        if (ind == arr.size()) {
-            if (target == 0) {
-                ans.push_back(ds);
-            }
+        if(target == 0){
+            ans.push_back(ds);
             return;
         }
 
-        if (arr[ind] <= target) {
-            // Condition for Pick up the element
-            ds.push_back(arr[ind]);
-            findCombinationHelper(ind, arr, target - arr[ind], ds, ans);
+        for(int i = ind; i<arr.size();i++){
+            if(arr[i]>target)   break;
+            ds.push_back(arr[i]);
+            findCombinationHelper(i, arr, target-arr[i], ds, ans);
             ds.pop_back();
         }
-
-        // Not Pick
-        findCombinationHelper(ind + 1, arr, target, ds, ans);
     }
 
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
@@ -25,6 +20,9 @@ public:
         cin.tie(nullptr);
         vector<vector<int>> ans;
         vector<int> ds;
+
+        sort(candidates.begin(), candidates.end());
+        // Sorting se  -> agar bada element mila remaining target se to break kr dena
 
         findCombinationHelper(0, candidates, target, ds, ans);
 
