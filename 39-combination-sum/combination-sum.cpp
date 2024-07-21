@@ -21,6 +21,8 @@ public:
     }
 
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
         vector<vector<int>> ans;
         vector<int> ds;
 
