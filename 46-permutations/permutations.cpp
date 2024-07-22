@@ -1,18 +1,18 @@
 class Solution {
 public:
     void Helper(vector<int>& arr, vector<int>& ds, vector<vector<int>>& ans,
-                unordered_map<int, bool> mp) {
+                vector<bool>& used) {
         if (ds.size() == arr.size()) {
             ans.push_back(ds);
             return;
         }
 
         for (int i = 0; i < arr.size(); i++) {
-            if (!mp[i]) {
+            if (!used[i]) {
                 ds.push_back(arr[i]);
-                mp[i] = 1;
-                Helper(arr, ds, ans, mp);
-                mp[i] = 0;
+                used[i] = true;
+                Helper(arr, ds, ans, used);
+                used[i] = false;
                 ds.pop_back();
             }
         }
@@ -21,12 +21,9 @@ public:
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>> ans;
         vector<int> ds;
-        unordered_map<int, bool> mp;
-        for (int i = 0; i < nums.size(); i++) {
-            mp[i] = 0;
-        }
+        vector<bool> used(nums.size(), false);
 
-        Helper(nums, ds, ans, mp);
+        Helper(nums, ds, ans, used);
 
         return ans;
     }
