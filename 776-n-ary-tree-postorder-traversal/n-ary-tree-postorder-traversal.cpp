@@ -36,7 +36,21 @@ public:
         if (root == nullptr)
             return result;
 
-        postorderHelper(root, result);
+        // postorderHelper(root, result);
+        stack<Node*> st;
+        st.push(root);
+
+        while (!st.empty()) {
+            Node* currNode = st.top();
+            st.pop();
+
+            result.push_back(currNode->val);
+
+            for (Node* child : currNode->children)
+                st.push(child);
+        }
+
+        reverse(result.begin(), result.end());
 
         return result;
     }
