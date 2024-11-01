@@ -1,22 +1,20 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        int slow = nums[0];
-        int fast = nums[0];
+        unordered_map<int, int> freq;
 
-        // Phase 1: Detect the intersection point of the two pointers
-        do {
-            slow = nums[slow];
-            fast = nums[nums[fast]];
-        } while (slow != fast);
-
-        // Phase 2: Find the entrance to the cycle
-        slow = nums[0];
-        while (slow != fast) {
-            slow = nums[slow];
-            fast = nums[fast];
+        for(int a:nums){
+            freq[a]++;
         }
 
-        return slow;
+        int repeat;
+
+        for(auto &entry:freq){
+            if(entry.second > 1){
+                repeat = entry.first;
+            }
+        }
+
+        return repeat;
     }
 };
