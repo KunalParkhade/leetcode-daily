@@ -1,40 +1,49 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-int init = [] {
-    ios_base::sync_with_stdio(false);  cin.tie(nullptr);
-    ofstream out("user.out");
-    for (string s; getline(cin, s);)
-        out<<(equal(s.begin()+1, s.begin()+s.size()/2, s.rbegin() + 1) ? "true\n" : "false\n");
-    out.flush();
-    exit(0);
-    
-    return 0;
-}();
-
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
-        vector<int> list;
-        auto temp=head;
-        while(head){
-            list.push_back(head->val);
-            head=head->next;
+        if (!head || !head->next) return true; // A single node or empty list is a palindrome
+        
+        // Step 1: Find the middle of the linked list
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        int n=list.size();
-        for(int i=n-1;i>=0;i--){
-            if(list[i]!=temp->val){
-                return false;
+
+        // Step 2: Reverse the second half of the linked list
+        ListNode* prev = nullptr;
+        ListNode* curr = slow;
+        while (curr) {
+            ListNode* nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+
+        // Step 3: Compare the first and second halves
+        ListNode* firstHalf = head;
+        ListNode* secondHalf = prev; // This is now the head of the reversed second half
+        bool isPalin = true;
+        while (secondHalf) {
+            if (firstHalf->val != secondHalf->val) {
+                isPalin = false;
+                break;
             }
-            temp=temp->next;
+            firstHalf = firstHalf->next;
+            secondHalf = secondHalf->next;
         }
-        return true;
+
+        // Step 4: Restore the second half of the list
+        curr = prev;
+        prev = nullptr;
+        while (curr) {
+            ListNode* nextNode = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+
+        return isPalin;
     }
 };
